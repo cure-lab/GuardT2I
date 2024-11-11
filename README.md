@@ -14,6 +14,7 @@ Recent advancements in Text-to-Image (T2I) models have raised significant safety
 
 ## Method Overview
 ![image](./images/overview.png)
+![image](./images/workflow.png)
 
 
 ## Use GuardT2I
