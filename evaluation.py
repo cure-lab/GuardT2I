@@ -73,11 +73,11 @@ def check_words(word_set, sentence):
 
 
 
-def eval_decoder(bert_model, eval_loader):
+def eval_decoder(guardt2i, eval_loader):
     # num_batch = len(iter(eval_loader))
     print('textdecoder evaluating loss on validation data ...')
     acc_loss = 0
-    bert_model.eval()
+    guardt2i.eval()
     with torch.no_grad():
         for i, batch in enumerate(tqdm(eval_loader)):
             input_ids, attention_mask, label_ids, clip_embeds = batch
@@ -85,7 +85,7 @@ def eval_decoder(bert_model, eval_loader):
 
             N, seq_length = input_ids.shape
             position_ids = torch.arange(0, seq_length).expand(N, seq_length)
-            out = bert_model(input_ids=input_ids.to(device),
+            out = guardt2i(input_ids=input_ids.to(device),
                                  position_ids=position_ids.to(device),
                                  attention_mask=attention_mask.to(device),
                                  encoder_hidden_states=clip_extended_embed.unsqueeze(1).to(device),
@@ -123,30 +123,20 @@ if __name__ == '__main__':
 
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    pipe_inpaint = StableDiffusionInpaintPipeline.from_pretrained(
-      "/bian_data/safe_text_diffusion/safe_diffusion/stable-diffusion-inpainting",
-    ).to(device)
-    print("success diffuser")
-    clip_model = pipe_inpaint.text_encoder 
-    clip_tokenizer = pipe_inpaint.tokenizer 
-
-    # device = accelerator.device
-
+    #* source of clip_model and clip_tokenizer
+    # pipe_inpaint = StableDiffusionInpaintPipeline.from_pretrained(
+    #   "/bian_data/safe_text_diffusion/safe_diffusion/stable-diffusion-inpainting",
+    # ).to(device)
+    # print("success diffuser")
+    # clip_model = pipe_inpaint.text_encoder 
+    # clip_tokenizer = pipe_inpaint.tokenizer 
     
-    bert_config = BertGenerationConfig.from_pretrained("google/bert_for_seq_generation_L-24_bbc_encoder")
-    bert_config.is_decoder=True
-    bert_config.add_cross_attention=True
-    bert_config.return_scores = True
-    
-    bert_model = BertGenerationDecoder.from_pretrained('google/bert_for_seq_generation_L-24_bbc_encoder',
-                                                       config=bert_config).to(device).train()
-    # import ipdb; ipdb.set_trace()
-    # optimizer = AdamW(bert_model.parameters(), lr=args.lr)
+    clip_model = torch.load("clip_model.pt")
+    clip_tokenizer = torch.load("clip_tokenizer.pt")
 
-    bert_model.load_state_dict(torch.load("/bian_data/safe_text_diffusion/safe_diffusion/trained_models/laion-COCO/CLIP-vit-large/729_25model_text_dump.pt")["net"])
-
+    guardt2i = torch.load("guardt2i.pt")
     
-    bert_model.eval()
+    guardt2i.eval()
     print("bert success")
 
     clean_1000 = torch.load("./clean_1000.pt")
@@ -200,7 +190,7 @@ if __name__ == '__main__':
         
         position_ids = torch.arange(0, len(target)).expand(1, len(target)).to(device)
         with torch.no_grad():
-            out = bert_model(input_ids=target.to(device),
+            out = guardt2i(input_ids=target.to(device),
                             position_ids=position_ids,
                             attention_mask=torch.ones(len(target)).unsqueeze(0).to(device),
                             encoder_hidden_states=clip_extended_embed.unsqueeze(1).to(device),
