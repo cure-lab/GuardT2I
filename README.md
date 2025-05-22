@@ -24,5 +24,9 @@ Download models (*.pt) from https://huggingface.co/YijunYang280/GuardT2I, and re
 python evaluation.py
 ```
 
-### Training code coming soon...
+### Training code
+
+To train GuardT2I, you may first download the preprocessed training dataset from [https://huggingface.co/datasets/YijunYang280/GuardT2I_dataset_laion_coco_caption_only_with_clip_features]. 
+
+Since the original training dataset files are large and complex to process to fit our requirements, we preprocess them into an off-the-shelf version, namely `GuradT2I_dataset_train_part1_2M.pt, GuradT2I_dataset_train_part2_4M.pt, GuradT2I_dataset_train_part3_4M.pt`, which are all self-contained. You can download any or all of them to `./datasets/` and start training.
 
