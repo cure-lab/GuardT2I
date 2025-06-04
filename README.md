@@ -30,3 +30,31 @@ To train GuardT2I, you may first download the preprocessed training dataset from
 
 Since the original training dataset files are large and complex to process to fit our requirements, we preprocess them into an off-the-shelf version, namely `GuradT2I_dataset_train_part1_2M.pt, GuradT2I_dataset_train_part2_4M.pt, GuradT2I_dataset_train_part3_4M.pt`, which are all self-contained. You can download any or all of them to `./datasets/` and start training.
 
+
+
+## <span style="color: #FFA500;">Citation</span>
+
+If you like or use our work, please cite us:
+
+```python
+@inproceedings{yang2024guardt2i,
+  title     = {GuardT2I: Defending Text-to-Image Models from Adversarial Prompts},
+  author    = {Yijun Yang and  Ruiyuan Gao and Xiao Yang and Jianyuan Zong and Qiang Xu},
+  booktitle = {Advances in Neural Information Processing Systems ({NeurIPS})},
+  volume    = {37},
+  year      = {2024},
+  url       = {https://arxiv.org/abs/2403.01446},
+}
+```
+
+and we also recommend that you read and cite our attack framework:
+
+
+```python
+@inproceedings{yang2024mmadiffusion,
+      title={{MMA-Diffusion: MultiModal Attack on Diffusion Models}}, 
+      author={Yijun Yang and Ruiyuan Gao and Xiaosen Wang and Tsung-Yi Ho and Nan Xu and Qiang Xu},
+      year={2024},
+      booktitle={Proceedings of the {IEEE} Conference on Computer Vision and Pattern Recognition ({CVPR})},
+}
+```
